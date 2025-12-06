@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: arm_prbt
+    relative_path: urdf/arm_prbt.urdf
+  srdf:
+    relative_path: config/prbt.srdf
+  package_settings:
+    author_name: freeze
+    author_email: luoyzshu@qq.com
+    generated_timestamp: 1764417424
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

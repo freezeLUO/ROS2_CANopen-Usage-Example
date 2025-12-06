@@ -1,0 +1,66 @@
+options:
+    dcf_path: "@BUS_CONFIG_PATH@"
+
+master:
+    node_id: 10
+    driver: "ros2_canopen::MasterDriver"
+    package: "canopen_master_driver"
+    sync_period: 10000 # µs
+    boot_timeout: 10000 
+
+defaults:
+    dcf: "ZeroErr_Driver_V1.5.eds"
+    driver: "ros2_canopen::Cia402Driver"
+    package: "canopen_402_driver"
+    period: 10
+    heartbeat_producer: 1000
+    boot_timeout_ms: 5000 # 5秒等待 boot
+    switching_state: 5 # 切换到 Operation Enabled 状态
+    position_mode: 8 # 模式 8: CSP模式
+    scale_pos_from_dev: 0.000011984
+    scale_pos_to_dev: 83443.0268037
+    sdo:
+        - {index: 0x6081, sub_index: 0, value: 1000}
+        # 设置插补时间周期 (Interpolation time period)，目标：10ms = 10 * 10^-3 秒，
+        # 对于实际电机其实没用......对于虚拟电机有用
+        - {index: 0x60C2, sub_index: 1, value: 10}  # Value = 10
+        - {index: 0x60C2, sub_index: 2, value: -3}  # Index = -3 (代表 10的-3次方，即毫秒)
+    tpdo: # TPDO needed statusword, actual velocity, actual position, mode of operation
+        1:
+            enabled: true
+            cob_id: "auto"
+            transmission: 0x01
+            mapping:
+                - {index: 0x6041, sub_index: 0} # status word
+                - {index: 0x6061, sub_index: 0} # mode of operation display
+        2:
+            enabled: true
+            cob_id: "auto"
+            transmission: 0x01
+            mapping:
+                - {index: 0x6064, sub_index: 0} # position actual value
+                - {index: 0x606c, sub_index: 0} # velocity actual position
+        3:
+            enabled: false
+        4:
+            enabled: false
+    rpdo: # RPDO needed controlword, target position, target velocity, mode of operation
+        1:
+            enabled: true
+            cob_id: "auto"
+            mapping:
+                - {index: 0x6040, sub_index: 0} # controlword
+                - {index: 0x6060, sub_index: 0} # mode of operation
+                - {index: 0x607A, sub_index: 0} # target position
+        2:
+            enabled: false
+
+nodes:
+    joint_1:
+        node_id: 1
+    joint_2:
+        node_id: 2
+    joint_3:
+        node_id: 3
+    joint_4:
+        node_id: 4

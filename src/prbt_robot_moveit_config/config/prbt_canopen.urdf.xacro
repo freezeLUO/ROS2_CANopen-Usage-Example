@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="prbt">
+    <!-- arguments required by prbt_canopen.ros2_control.xacro -->
+    <xacro:arg name="prefix" default="" />
+    <xacro:arg name="bus_config" default="$(find prbt_robot_support)/config/prbt/bus.yml" />
+    <xacro:arg name="master_config" default="$(find prbt_robot_support)/config/prbt/ZeroErr_Driver_V1.5.eds" />
+    <xacro:arg name="can_interface_name" default="vcan0" />
+    <xacro:arg name="master_bin" default="" />
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import prbt urdf file (may be a xacro or urdf) -->
+    <xacro:include filename="$(find arm_prbt)/urdf/arm_prbt.urdf" />
+
+    <!-- Import ros2_control xacro -->
+    <xacro:include filename="$(find prbt_robot_moveit_config)/config/prbt_canopen.ros2_control.xacro" />
+
+    <!-- instantiate ros2_control macro with explicit/default parameters -->
+    <xacro:prbt_ros2_control
+        name="prbt_canopen_system"
+        prefix=""
+        bus_config="$(find prbt_robot_support)/config/prbt/bus.yml"
+        master_config="$(find prbt_robot_support)/config/prbt/master.dcf"
+        can_interface_name="vcan0"
+        master_bin=""/>
+
+</robot>

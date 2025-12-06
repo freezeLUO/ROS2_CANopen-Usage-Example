@@ -1,0 +1,39 @@
+controller_manager:
+    ros__parameters:
+        update_rate: 100  # Hz
+
+        joint_state_broadcaster:
+            type: joint_state_broadcaster/JointStateBroadcaster
+
+        prbt_group_controller:
+            type: joint_trajectory_controller/JointTrajectoryController
+
+prbt_group_controller:
+    ros__parameters:
+        joints:
+            - joint_1
+            - joint_2
+            - joint_3
+            - joint_4
+        command_interfaces:
+            - position
+        state_interfaces:
+            - position
+            - velocity
+        stop_trajectory_duration: 0.2
+        state_publish_rate:  100.0
+        action_monitor_rate: 25.0
+        goal_time: 0.0
+        limits:
+            joint_1:
+                has_acceleration_limits: true
+                max_acceleration: 6.0
+            joint_2:
+                has_acceleration_limits: true
+                max_acceleration: 6.0
+            joint_3:
+                has_acceleration_limits: true
+                max_acceleration: 6.0
+            joint_4:
+                has_acceleration_limits: true
+                max_acceleration: 6.0
